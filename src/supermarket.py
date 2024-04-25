@@ -1,12 +1,14 @@
 import json
 
-with open("../item/item.json") as f:
+with open("item/item.json") as f:
     item_list = json.load(f)
 
-order = [[7, 1], [1, 5], [6, 1]]
-
 def item_price(item_num, amount):
-    return item_list.get(str(item_num)).get('金額')*amount
+    if item_num == 1 and amount >= 3:
+        price = 280 * (amount // 3) + 100 * (amount % 3)
+    else:
+        price = item_list.get(str(item_num)).get('金額')*amount
+    return price
 
 def in_tax(total_price):
     return total_price*1.08
@@ -35,6 +37,5 @@ def total_price(order):
         else:
             other.append(n)
     
-    return tabaco_price(t) + unit_price(other)
+    return round(tabaco_price(t) + unit_price(other))
 
-print(total_price(order))
