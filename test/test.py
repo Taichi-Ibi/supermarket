@@ -1,35 +1,36 @@
-from src.supermarket import item_price, tabaco_price, unit_price
+import pytest
+from src.supermarket import item_price, tabaco_price, unit_price, non_taxed_price
 
-#お題4
-order = [[1, 4]]
-y_pred = item_price(*order[0])
-y_true = 380
-assert y_pred == y_true, f'y_pred:{y_pred}, y_true:{y_true}'
-
-order = [[1, 2]]
-y_pred = item_price(*order[0])
-y_true = 200
-assert y_pred == y_true, f'y_pred:{y_pred}, y_true:{y_true}'
-
-#お題3
-order = [[6, 1]]
-y_pred = tabaco_price(order)
-y_true = 420
-assert y_pred == y_true, f'y_pred:{y_pred}, y_true:{y_true}'
-
-order = [[7, 1]]
-y_pred = tabaco_price(order)
-y_true = 440
-assert y_pred == y_true, f'y_pred:{y_pred}, y_true:{y_true}'
+#お題1
+@pytest.mark.parametrize("test_input, expected", [
+    ([[2, 1], [3, 1]], 190)
+])
+def test_q1(test_input, expected):
+    y_pred = non_taxed_price(test_input)
+    assert y_pred == expected, f'y_pred:{y_pred}, y_true:{expected}'
 
 #お題2
-order = [[2, 1], [3, 1]]
-y_pred = unit_price(order)
-y_true = 190 * 1.08
-assert y_pred == y_true, f'y_pred:{y_pred}, y_true:{y_true}'
+@pytest.mark.parametrize("test_input, expected", [
+    ([[2, 1], [3, 1]], 190 * 1.08)
+])
+def test_q2(test_input, expected):
+    y_pred = unit_price(test_input)
+    assert y_pred == expected, f'y_pred:{y_pred}, y_true:{expected}'
 
-# #お題1
-# order = [[2, 1], [3, 1]]
-# y_pred = unit_price(order)
-# y_true = 190 * 1.08
-# assert y_pred == y_true, f'y_pred:{y_pred}, y_true:{y_true}'
+#お題3
+@pytest.mark.parametrize("test_input, expected", [
+    ([[6, 1]], 420),
+    ([[7, 1]], 440)
+])
+def test_q3(test_input, expected):
+    y_pred = tabaco_price(test_input)
+    assert y_pred == expected, f'y_pred:{y_pred}, y_true:{expected}'
+
+#お題4
+@pytest.mark.parametrize("test_input, expected", [
+    ([[1, 4]], 380),
+    ([[1, 2]], 200)
+])
+def test_q4(test_input, expected):
+    y_pred = item_price(*test_input[0])
+    assert y_pred == expected, f'y_pred:{y_pred}, y_true:{expected}'
