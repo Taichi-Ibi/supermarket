@@ -3,6 +3,13 @@ import json
 with open("item/item.json") as f:
     item_list = json.load(f)
 
+def non_taxed_price(orders):
+    price = 0
+    for order in orders:
+        price += item_list.get(str(order["id"])).get('金額')*order["amount"]
+    return price
+
+
 def item_price(item_num, amount):
     if item_num == 1 and amount >= 3:
         price = 280 * (amount // 3) + 100 * (amount % 3)
