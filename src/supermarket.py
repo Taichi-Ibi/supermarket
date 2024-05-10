@@ -10,48 +10,20 @@ def non_taxed_price(orders):
     return price
 
 def taxed_price(orders):
-    return round(non_taxed_price(orders)*1.08)
+    price = non_taxed_price(orders)
+    discount_price = discount(orders)
+    return round((price - discount_price) * 1.08)
 
 def total_price(orders):
     tabaco_ids = [6, 7]
     non_taxed_orders = [order for order in orders if order["id"] in tabaco_ids]
     taxed_orders = [order for order in orders if order["id"] not in tabaco_ids]
-    print(non_taxed_orders, taxed_orders)
     return taxed_price(taxed_orders) + non_taxed_price(non_taxed_orders)
 
-def item_price(item_num, amount):
-    if item_num == 1 and amount >= 3:
-        price = 280 * (amount // 3) + 100 * (amount % 3)
-    else:
-        price = item_list.get(str(item_num)).get('金額')*amount
-    return price
-
-def in_tax(total_price):
-    return total_price*1.08
-
-def unit_price(order):
-    p = []
-    for i in order:
-        p.append(item_price(*i))
-    return in_tax(sum(p))
-
-def tabaco_price(order):
-    p = []
-    for i in order:
-        p.append(item_price(*i))
-    return sum(p)
-
-# def total_price(order):
-#     t = []
-#     other = []
-
-#     for n in order:
-#         if n[0] == 6:
-#             t.append(n)
-#         elif n[0] == 7:
-#             t.append(n)
-#         else:
-#             other.append(n)
-    
-#     return round(tabaco_price(t) + unit_price(other))
-
+def discount(orders):
+    apple_ids = [1]
+    apple_orders = [order for order in orders if order["id"] in apple_ids]
+    count = 0
+    for order in apple_orders:
+        count += order["amount"]
+    return (count // 3) * 20
