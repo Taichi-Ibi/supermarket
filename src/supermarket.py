@@ -12,6 +12,13 @@ def non_taxed_price(orders):
 def taxed_price(orders):
     return round(non_taxed_price(orders)*1.08)
 
+def total_price(orders):
+    tabaco_ids = [6, 7]
+    non_taxed_orders = [order for order in orders if order["id"] in tabaco_ids]
+    taxed_orders = [order for order in orders if order["id"] not in tabaco_ids]
+    print(non_taxed_orders, taxed_orders)
+    return taxed_price(taxed_orders) + non_taxed_price(non_taxed_orders)
+
 def item_price(item_num, amount):
     if item_num == 1 and amount >= 3:
         price = 280 * (amount // 3) + 100 * (amount % 3)
@@ -34,17 +41,17 @@ def tabaco_price(order):
         p.append(item_price(*i))
     return sum(p)
 
-def total_price(order):
-    t = []
-    other = []
+# def total_price(order):
+#     t = []
+#     other = []
 
-    for n in order:
-        if n[0] == 6:
-            t.append(n)
-        elif n[0] == 7:
-            t.append(n)
-        else:
-            other.append(n)
+#     for n in order:
+#         if n[0] == 6:
+#             t.append(n)
+#         elif n[0] == 7:
+#             t.append(n)
+#         else:
+#             other.append(n)
     
-    return round(tabaco_price(t) + unit_price(other))
+#     return round(tabaco_price(t) + unit_price(other))
 

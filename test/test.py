@@ -26,12 +26,13 @@ def test_q2(test_input, expected):
 
 #お題3
 @pytest.mark.parametrize("test_input, expected", [
-    ([[6, 1]], 420),
-    ([[7, 1]], 440)
+    ([{"id":6, "amount":1}], 420),
+    ([{"id":7, "amount":1}, {"id":3, "amount":1}], 440 + round(150 * 1.08)),
+    ([{"id":1, "amount":1}, {"id":3, "amount":1}], round(250 * 1.08))
 ])
 def test_q3(test_input, expected):
-    y_pred = tabaco_price(test_input)
-    assert y_pred == expected, f'y_pred:{y_pred}, y_true:{expected}'
+    y_pred = total_price(test_input)
+    assert y_pred == expected
 
 #お題4
 @pytest.mark.parametrize("test_input, expected", [
