@@ -9,6 +9,8 @@ def non_taxed_price(orders):
         price += item_list.get(str(order["id"])).get('金額')*order["amount"]
     return price
 
+def taxed_price(orders):
+    return round(non_taxed_price(orders)*1.08)
 
 def item_price(item_num, amount):
     if item_num == 1 and amount >= 3:
